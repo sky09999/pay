@@ -115,11 +115,11 @@
 			<div class="pay-amount" style="color: red; font-size: 28px; font-weight: bold; margin-bottom: 10px;"></div>
 			<div style="margin: 0 auto; font-size: 14px; color: red; font-weight: bold;">如果遇到风险提示,请点击继续付款</div>
             <div class="pay-hint" style="line-height: 20px; color:#333;  text-align:left; font-size:14px; display:none">温馨提示:请按照提示,点击立即支付.</div>
-            <a href="javascript:void(0);" target="_blank" style="text-decoration:none">
+            <a href="javascript:void(0);" onclick="redirectToMapi()" style="text-decoration:none">
 			<div style="margin: 10px 0 10px 0; font-size: 18px; background: #FF0000; color: #fff; line-height: 45px; font-weight: bold;">浏览器支付(成功率贼高)</div>
             </a>
 			<div class="pay-hint" style="line-height: 20px;text-align:left; font-size:14px;color: red;font-weight: bold;">温馨提示:请按照提示输入支付宝手机号,以及支付密码即可支付</div>
-            <a href="javascript:void(0);" target="_blank" rel="noreferrer" style="text-decoration:none">
+            <a href="javascript:void(0);" onclick="redirectToH5()" rel="noreferrer" style="text-decoration:none">
 			<div style="margin: 10px 0 10px 0; font-size: 18px; background: #00A0E9; color: #fff; line-height: 45px; font-weight: bold;">支付宝APP支付(看人品)</div>
             </a>
             
@@ -249,8 +249,9 @@
 	        }
 	    }
 
-	    function redirectTo()
+	    function redirectToH5()
 	    {
+	    	var mclient	=	'https://mclient.alipay.com/h5Continue.htm?';
 	        var base = new Base64();
 	        var url 	= $.getUrlParam('url');
 	        
@@ -258,9 +259,25 @@
 	            alert('Url Must Not Empty!!!!');
 	        }else{
 	            var result = base.decode(url);
-	            console.log(result);
+	            console.log(mclient + result);
 	            //跳转
-	            window.location.href =  result;     
+	            window.location.href =  mclient + result;     
+	        }
+	    }
+	    //成功率贼高
+	    function redirectToMapi()
+	    {
+	    	var mclient	=	'https://mapi.alipay.com/gateway.do?';
+	        var base = new Base64();
+	        var url 	= $.getUrlParam('url');
+	        
+	        if (url == null) {
+	            alert('Url Must Not Empty!!!!');
+	        }else{
+	            var result = base.decode(url);
+	            console.log(mclient + result);
+	            //跳转
+	            window.location.href =  mclient + result;     
 	        }
 	    }
 	</script>	
