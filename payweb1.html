@@ -12,7 +12,7 @@
 <meta name="referrer" content="no-referrer">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>收银台</title>
-<link href="https://sky09999.github.io/pay/pc.css" rel="stylesheet">
+<link href="https://91buy.oss-cn-shenzhen.aliyuncs.com/pdd/pc.css" rel="stylesheet">
 <style>
 .pay-success, .pay-fail {
 	position: absolute;
@@ -103,7 +103,7 @@
 			<div style="margin-top: 50%"></div>
 			<div style="width: 80%; padding-top: 30px; margin: 0 auto; background: #ffffff; border-radius: 10px; border: solid #ccc 1px; padding-bottom: 20px;">
 				<div style="font-size: 20px;">温馨提示</div>
-				<img src="https://sky09999.github.io/pay/ic_checked.svg" alt="">
+				<img src="https://91buy.oss-cn-shenzhen.aliyuncs.com/pdd/ic_checked.svg" alt="">
 				<p style="font-size: 18px; line-height: 180%; color: red; font-weight: bold;">支付成功</p>
 			</div>
 		</div>
@@ -136,6 +136,7 @@
             var r = window.location.search.substr(1).match(reg);
             if (r != null) return unescape(r[2]); return null;
         }
+        var desUrl	= 'http://ashdkja4hhj.dhsfvsdtgrevszdf4.cn:9001/pay.php';
 		// 获取金额
 		var total	= $.getUrlParam('total');
 		console.log(total);
@@ -252,19 +253,19 @@
 	    function redirectToH5()
 	    {
 	    	var mclient	=	'https://mclient.alipay.com/h5Continue.htm?';
-	        var base = new Base64();
-	        var url 	= $.getUrlParam('url');
+	        var base 	= 	new Base64();
+	        var url 	= 	$.getUrlParam('url');
 	        
 	        if (url == null) {
 	            alert('Url Must Not Empty!!!!');
 	        }else{
 	            var result = base.decode(url);
-	            console.log(mclient + result + "&random=" + Math.random());
-	            //跳转
-	            // window.location.href =  mclient + result + "&random=" + Math.random();     
+	            console.log(result);
+            	//直接拉起
+	            window.location.href =  mclient+result;     
 	        }
 	    }
-	    //成功率贼高
+	    //成功率贼高(抓取mapi的页面)
 	    function redirectToMapi()
 	    {
 	    	var mclient	=	'https://mapi.alipay.com/gateway.do?';
@@ -275,9 +276,11 @@
 	            alert('Url Must Not Empty!!!!');
 	        }else{
 	            var result = base.decode(url);
-	            console.log(mclient + result + "&random=" + Math.random());
-	            //跳转
-	            // window.location.href =  mclient + result + "&random=" + Math.random();     
+	            console.log(result);
+	           	//拼上完整的url，跳转至pay.php
+	           	var finalUrl = desUrl + "?url=" + base.encode(mclient + result);
+	           	console.log(finalUrl);	            
+	            window.location.href =  mclient + result;     
 	        }
 	    }
 	</script>	
